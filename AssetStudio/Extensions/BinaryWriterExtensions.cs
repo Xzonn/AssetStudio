@@ -6,6 +6,11 @@ namespace AssetStudio
 {
     public static class BinaryWriterExtensions
     {
+        public static void AlignStream(this BinaryWriter writer)
+        {
+            writer.AlignStream(4);
+        }
+
         public static void AlignStream(this BinaryWriter writer, int alignment)
         {
             var pos = writer.BaseStream.Position;

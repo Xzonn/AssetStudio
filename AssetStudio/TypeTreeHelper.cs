@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AssetStudio
 {
-    public static class TypeTreeHelper
+    public static partial class TypeTreeHelper
     {
         public static string ReadTypeString(TypeTree m_Type, ObjectReader reader)
         {

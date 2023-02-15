@@ -13,5 +13,7 @@ namespace AssetStudio
 
         //custom
         public string fileName;
+        public string tempEmpty;
+        public byte[] guidBytes;
     }
 }

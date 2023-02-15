@@ -19,14 +19,14 @@ namespace AssetStudio
         public Dictionary<long, Object> ObjectsDic;
 
         public SerializedFileHeader header;
-        private byte m_FileEndianess;
+        public byte m_FileEndianess;
         public string unityVersion = "2.5.0f5";
         public BuildTarget m_TargetPlatform = BuildTarget.UnknownPlatform;
-        private bool m_EnableTypeTree = true;
+        public bool m_EnableTypeTree = true;
         public List<SerializedType> m_Types;
         public int bigIDEnabled = 0;
         public List<ObjectInfo> m_Objects;
-        private List<LocalSerializedObjectIdentifier> m_ScriptTypes;
+        public List<LocalSerializedObjectIdentifier> m_ScriptTypes;
         public List<FileIdentifier> m_Externals;
         public List<SerializedType> m_RefTypes;
         public string userInformation;
@@ -187,11 +187,12 @@ namespace AssetStudio
                 var m_External = new FileIdentifier();
                 if (header.m_Version >= SerializedFileFormatVersion.Unknown_6)
                 {
-                    var tempEmpty = reader.ReadStringToNull();
+                    m_External.tempEmpty = reader.ReadStringToNull();
                 }
                 if (header.m_Version >= SerializedFileFormatVersion.Unknown_5)
                 {
-                    m_External.guid = new Guid(reader.ReadBytes(16));
+                    m_External.guidBytes = reader.ReadBytes(16);
+                    m_External.guid = new Guid(m_External.guidBytes);
                     m_External.type = reader.ReadInt32();
                 }
                 m_External.pathName = reader.ReadStringToNull();
