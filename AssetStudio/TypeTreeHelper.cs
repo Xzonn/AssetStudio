@@ -307,8 +307,10 @@ namespace AssetStudio
 
         private static List<TypeTreeNode> GetNodes(List<TypeTreeNode> m_Nodes, int index)
         {
-            var nodes = new List<TypeTreeNode>();
-            nodes.Add(m_Nodes[index]);
+            var nodes = new List<TypeTreeNode>
+            {
+                m_Nodes[index]
+            };
             var level = m_Nodes[index].m_Level;
             for (int i = index + 1; i < m_Nodes.Count; i++)
             {
@@ -321,6 +323,102 @@ namespace AssetStudio
                 nodes.Add(member);
             }
             return nodes;
+        }
+
+        public static TypeTree LoadTypeTree(BinaryReader reader)
+        {
+            TypeTree m_Type = new TypeTree
+            {
+                m_Nodes = new List<TypeTreeNode>()
+            };
+
+            int numberOfNodes = reader.ReadInt32();
+            int stringBufferSize = reader.ReadInt32();
+
+            for (int i = 0; i < numberOfNodes; i++)
+            {
+                var typeTreeNode = new TypeTreeNode();
+                m_Type.m_Nodes.Add(typeTreeNode);
+                typeTreeNode.m_Version = reader.ReadUInt16();
+                typeTreeNode.m_Level = reader.ReadByte();
+                typeTreeNode.m_TypeFlags = reader.ReadByte();
+                typeTreeNode.m_TypeStrOffset = reader.ReadUInt32();
+                typeTreeNode.m_NameStrOffset = reader.ReadUInt32();
+                typeTreeNode.m_ByteSize = reader.ReadInt32();
+                typeTreeNode.m_Index = reader.ReadInt32();
+                typeTreeNode.m_MetaFlag = reader.ReadInt32();
+            }
+            m_Type.m_StringBuffer = reader.ReadBytes(stringBufferSize);
+
+            using (var stringBufferReader = new BinaryReader(new MemoryStream(m_Type.m_StringBuffer)))
+            {
+                for (int i = 0; i < numberOfNodes; i++)
+                {
+                    var m_Node = m_Type.m_Nodes[i];
+                    m_Node.m_Type = ReadString(stringBufferReader, m_Node.m_TypeStrOffset);
+                    m_Node.m_Name = ReadString(stringBufferReader, m_Node.m_NameStrOffset);
+                }
+            }
+
+            string ReadString(BinaryReader stringBufferReader, uint value)
+            {
+                var isOffset = (value & 0x80000000) == 0;
+                if (isOffset)
+                {
+                    stringBufferReader.BaseStream.Position = value;
+                    return stringBufferReader.ReadStringToNull();
+                }
+                var offset = value & 0x7FFFFFFF;
+                if (CommonString.StringBuffer.TryGetValue(offset, out var str))
+                {
+                    return str;
+                }
+                return offset.ToString();
+            }
+
+            return m_Type;
+        }
+
+        public static void DumpTypeTree(TypeTree m_Type, BinaryWriter writer)
+        {
+            int numberOfNodes = m_Type.m_Nodes.Count;
+            byte[] m_StringBuffer = m_Type.m_StringBuffer;
+            if (m_StringBuffer == null)
+            {
+                var ms = new MemoryStream();
+                using (var stringBufferWriter = new BinaryWriter(ms))
+                {
+                    foreach (var m_Node in m_Type.m_Nodes)
+                    {
+                        m_Node.m_TypeStrOffset = (uint)stringBufferWriter.BaseStream.Position;
+                        stringBufferWriter.Write(Encoding.UTF8.GetBytes(m_Node.m_Type));
+                        stringBufferWriter.Write((byte)0);
+                        m_Node.m_NameStrOffset = (uint)stringBufferWriter.BaseStream.Position;
+                        stringBufferWriter.Write(Encoding.UTF8.GetBytes(m_Node.m_Name));
+                        stringBufferWriter.Write((byte)0);
+                    }
+                }
+                m_StringBuffer = ms.ToArray();
+            }
+
+            int stringBufferSize = m_StringBuffer.Length;
+
+            writer.Write(numberOfNodes);
+            writer.Write(stringBufferSize);
+
+            foreach (var typeTreeNode in m_Type.m_Nodes)
+            {
+                writer.Write((ushort)typeTreeNode.m_Version);
+                writer.Write((byte)typeTreeNode.m_Level);
+                writer.Write((byte)typeTreeNode.m_TypeFlags);
+                writer.Write(typeTreeNode.m_TypeStrOffset);
+                writer.Write(typeTreeNode.m_NameStrOffset);
+                writer.Write(typeTreeNode.m_ByteSize);
+                writer.Write(typeTreeNode.m_Index);
+                writer.Write(typeTreeNode.m_MetaFlag);
+            }
+
+            writer.Write(m_StringBuffer);
         }
     }
 }
