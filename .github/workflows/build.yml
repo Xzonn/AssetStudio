@@ -13,16 +13,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: microsoft/setup-msbuild@v1.1
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: '[17.9,)'
       
       - name: Download FBX SDK
         run: |
           md fbx
           cd fbx
-          Invoke-WebRequest "https://damassets.autodesk.net/content/dam/autodesk/www/adn/fbx/2020-2-1/fbx202021_fbxsdk_vs2019_win.exe" -OutFile "fbxsdk.exe"
+          Invoke-WebRequest "https://damassets.autodesk.net/content/dam/autodesk/www/adn/fbx/2020-3-4/fbx202034_fbxsdk_vs2022_win.exe" -OutFile "fbxsdk.exe"
           Start-Process -FilePath "fbxsdk.exe" /S -Wait
-          Invoke-WebRequest "https://damassets.autodesk.net/content/dam/autodesk/www/adn/fbx/2020-2-1/fbx202021_fbxsdk_vs2019_pdbs.exe" -OutFile "fbxpdb.exe"
+          Invoke-WebRequest "https://damassets.autodesk.net/content/dam/autodesk/www/adn/fbx/2020-3-4/fbx202034_fbxsdk_vs2022_pdbs.exe" -OutFile "fbxpdb.exe"
           Start-Process -FilePath "fbxpdb.exe" /S -Wait
           cd ..
 
@@ -30,28 +32,28 @@ jobs:
         run: nuget restore
       
       - name: Build .Net472
-        run: msbuild /p:Configuration=Release /p:TargetFramework=net472 /verbosity:minimal
-
-      - name: Build .Net5
-        run: msbuild /t:AssetStudioGUI:publish /p:Configuration=Release /p:TargetFramework=net5.0-windows /p:SelfContained=false /verbosity:minimal
+        run: msbuild /p:Configuration=Release /p:Platform=x64 /p:TargetFramework=net472 /verbosity:minimal
 
       - name: Build .Net6
-        run: msbuild /t:AssetStudioGUI:publish /p:Configuration=Release /p:TargetFramework=net6.0-windows /p:SelfContained=false /verbosity:minimal
+        run: msbuild /t:AssetStudioGUI:publish /p:Platform=x64 /p:Configuration=Release /p:TargetFramework=net6.0-windows /p:SelfContained=false /verbosity:minimal
+
+      - name: Build .Net8
+        run: msbuild /t:AssetStudioGUI:publish /p:Platform=x64 /p:Configuration=Release /p:TargetFramework=net8.0-windows /p:SelfContained=false /verbosity:minimal
 
       - name: Upload .Net472 Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AssetStudio.net472
           path: AssetStudioGUI/bin/Release/net472
 
-      - name: Upload .Net5 Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: AssetStudio.net5
-          path: AssetStudioGUI/bin/Release/net5.0-windows/publish
-
       - name: Upload .Net6 Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AssetStudio.net6
           path: AssetStudioGUI/bin/Release/net6.0-windows/publish
+
+      - name: Upload .Net5 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AssetStudio.net8
+          path: AssetStudioGUI/bin/Release/net8.0-windows/publish

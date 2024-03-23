@@ -25,10 +25,10 @@ AssetStudio is a tool for exploring, extracting and exporting assets and assetbu
 
 - AssetStudio.net472
    - [.NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472)
-- AssetStudio.net5
-   - [.NET Desktop Runtime 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
 - AssetStudio.net6
    - [.NET Desktop Runtime 6.0](https://dotnet.microsoft.com/download/dotnet/6.0)
+- AssetStudio.net8
+   - [.NET Desktop Runtime 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 
 ## Usage

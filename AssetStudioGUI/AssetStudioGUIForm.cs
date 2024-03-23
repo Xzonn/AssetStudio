@@ -106,6 +106,7 @@ namespace AssetStudioGUI
             FMODinit();
 
             logger = new GUILogger(StatusStripUpdate);
+            logger.ShowErrorMessage = false;
             Logger.Default = logger;
             Progress.Default = new Progress<int>(SetProgressBarValue);
             Studio.StatusStripUpdate = StatusStripUpdate;
