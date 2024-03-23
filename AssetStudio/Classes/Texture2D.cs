@@ -62,6 +62,7 @@ namespace AssetStudio
         public GLTextureSettings m_TextureSettings;
         public ResourceReader image_data;
         public StreamingInfo m_StreamData;
+        public byte[] m_PlatformBlob;
 
         public Texture2D(ObjectReader reader) : base(reader)
         {
@@ -122,7 +123,7 @@ namespace AssetStudio
             }
             if (version[0] > 2020 || (version[0] == 2020 && version[1] >= 2)) //2020.2 and up
             {
-                var m_PlatformBlob = reader.ReadUInt8Array();
+                m_PlatformBlob = reader.ReadUInt8Array();
                 reader.AlignStream();
             }
             var image_data_size = reader.ReadInt32();
