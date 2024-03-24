@@ -10,7 +10,7 @@ namespace AssetStudio
 {
     public static partial class TypeTreeHelper
     {
-        public static void WriteType( OrderedDictionary obj, TypeTree m_Types, BinaryWriter writer)
+        public static void WriteType(OrderedDictionary obj, TypeTree m_Types, BinaryWriter writer)
         {
             // writer.Position = 0;
             var m_Nodes = m_Types.m_Nodes;

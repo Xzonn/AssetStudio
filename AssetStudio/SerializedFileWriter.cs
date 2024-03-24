@@ -18,22 +18,22 @@ namespace AssetStudio
 
     public static class SerializedFileWriter
     {
-        public static void SaveAs(this SerializedFile assetsFile, string path, Dictionary<long, Stream> replaceStreams = null)
+        public static void SaveAs(this SerializedFile assetsFile, string path, Dictionary<long, Stream> replacedStreams = null)
         {
             using (var stream = File.Create(path))
             {
-                assetsFile.SaveAs(stream, replaceStreams);
+                assetsFile.SaveAs(stream, replacedStreams);
             }
         }
-        public static void SaveAs(this SerializedFile assetsFile, Stream stream, Dictionary<long, Stream> replaceStreams = null)
+        public static void SaveAs(this SerializedFile assetsFile, Stream stream, Dictionary<long, Stream> replacedStreams = null)
         {
             using (var writer = new EndianBinaryWriter(stream))
             {
-                assetsFile.SaveAs(writer, replaceStreams);
+                assetsFile.SaveAs(writer, replacedStreams);
             }
         }
 
-        public static void SaveAs(this SerializedFile assetsFile, EndianBinaryWriter writer, Dictionary<long, Stream> replaceStreams = null)
+        public static void SaveAs(this SerializedFile assetsFile, EndianBinaryWriter writer, Dictionary<long, Stream> replacedStreams = null)
         {
             var newObjects = assetsFile.m_Objects.Select((x, i) => new ObjectSortHelper()
             {
@@ -46,9 +46,9 @@ namespace AssetStudio
             for (int i = 0; i < newObjects.Count; i++)
             {
                 var @object = newObjects[i];
-                if (replaceStreams != null && replaceStreams.ContainsKey(@object.@object.m_PathID))
+                if (replacedStreams != null && replacedStreams.ContainsKey(@object.@object.m_PathID))
                 {
-                    @object.@object = new ObjectReplaced(@object.@object, replaceStreams[@object.@object.m_PathID]);
+                    @object.@object = new ObjectReplaced(@object.@object, replacedStreams[@object.@object.m_PathID]);
                 }
                 @object.offset = objectOffset;
                 objectOffset += @object.@object.byteSize;
