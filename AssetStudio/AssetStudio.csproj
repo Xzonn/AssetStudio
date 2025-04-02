@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <Version>0.16.53.0</Version>
     <AssemblyVersion>0.16.53.0</AssemblyVersion>
     <FileVersion>0.16.53.0</FileVersion>
@@ -19,15 +19,15 @@
     <PackageReference Include="K4os.Compression.LZ4" Version="1.1.11" />
   </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="LuaDecompile\" />
-		<Content Include="Dependencies\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="LuaDecompile\" />
+    <Content Include="Dependencies\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

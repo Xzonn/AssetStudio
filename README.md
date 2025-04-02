@@ -1,28 +1,4 @@
-- [README 中文](./README_zh.md)
-- [README English](./README.md)
-
 # AssetStudio
-
-![Last Commit](https://img.shields.io/github/last-commit/zhangjiequan/AssetStudio?style=flat-square)
-[![Open Issues](https://img.shields.io/github/issues-raw/zhangjiequan/AssetStudio?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/issues)
-![Contributors](https://img.shields.io/github/contributors/zhangjiequan/AssetStudio?style=flat-square)
-![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?style=flat-square)
-
-[![](https://img.shields.io/github/downloads/zhangjiequan/AssetStudio/total?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/releases)
-[![](https://img.shields.io/github/downloads/zhangjiequan/AssetStudio/latest/total?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/releases/latest)
-[![](https://img.shields.io/github/v/release/zhangjiequan/AssetStudio?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/releases/latest)
-
-[![GitHub watchers](https://img.shields.io/github/watchers/zhangjiequan/AssetStudio?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/watchers)
-[![GitHub forks](https://img.shields.io/github/forks/zhangjiequan/AssetStudio?style=flat-square)](https://gitpop2.vercel.app/zhangjiequan/AssetStudio)
-[![GitHub stars](https://img.shields.io/github/stars/zhangjiequan/AssetStudio?style=flat-square)](https://github.com/zhangjiequan/AssetStudio/stargazers)
-
-![Platform](https://img.shields.io/badge/platform-windows-lightgrey?style=flat-square)
-[![License](https://img.shields.io/github/license/zhangjiequan/AssetStudio?style=flat-square)](./LICENSE)
-
-[![Github CI Status](https://github.com/zhangjiequan/AssetStudio/actions/workflows/build.yml/badge.svg)](https://github.com/zhangjiequan/AssetStudio/actions)
-
-![Custom](https://img.shields.io/badge/zhangjiequan-green)
-
 
 AssetStudio - Based on the archived Perfare's AssetStudio, I continue Perfare's work to keep AssetStudio up-to-date, with support for new Unity versions and additional improvements.
 
@@ -148,4 +124,3 @@ AssetStudio is a free and open-source software. If you like it and find it helpf
 
 ## Star History
 [![Star History Chart](https://api.star-history.com/svg?repos=zhangjiequan/AssetStudio&type=Date)](https://star-history.com/#zhangjiequan/AssetStudio&Date)
-
