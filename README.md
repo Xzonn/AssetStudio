@@ -1,5 +1,16 @@
 # AssetStudio
-[![Build status](https://ci.appveyor.com/api/projects/status/rnu7l90422pdewx4?svg=true)](https://ci.appveyor.com/project/Perfare/assetstudio/branch/master/artifacts)
+
+AssetStudio - Based on the archived Perfare's AssetStudio, I continue Perfare's work to keep AssetStudio up-to-date, with support for new Unity versions and additional improvements.
+
+## What This Fork Offers Over the Original Repository
+* Support for New Unity Versions
+  * Added support for Unity 2021.3.10+, 2022.2, and 2022.3.
+* Enhanced Shader Preview and Export
+  * Add pretty printing functionality to enhance shader information readability.
+  * Fix errors by implementing lazy generation for ShaderSubProgram as needed.
+* Support for Lua bytecode assets
+  * Decompile, preview and export LuaJIT, Lua 5.1, 5.2, and 5.3 bytecode assets.
+---
 
 **None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by, Unity Technologies or its affiliates.**
 
@@ -7,7 +18,7 @@ AssetStudio is a tool for exploring, extracting and exporting assets and assetbu
 
 ## Features
 * Support version:
-  * 3.4 - 2022.1
+  * 3.4 - 2022.3
 * Support asset types:
   * **Texture2D** : convert to png, tga, jpeg, bmp
   * **Sprite** : crop Texture2D to png, tga, jpeg, bmp
@@ -20,6 +31,7 @@ AssetStudio is a tool for exploring, extracting and exporting assets and assetbu
   * **VideoClip**
   * **MonoBehaviour** : json
   * **Animator** : export to FBX file with bound AnimationClip
+  * **Lua bytecode** : decompile Lua bytecode back to Lua source code
 
 ## Requirements
 
@@ -67,6 +79,10 @@ When you select an asset of the MonoBehaviour type for the first time, AssetStud
 
 First, use my another program [Il2CppDumper](https://github.com/Perfare/Il2CppDumper) to generate dummy dll, then when using AssetStudio to select the assembly directory, select the dummy dll folder.
 
+### Decompiling Lua Bytecode
+
+By default, the feature to decompile Lua bytecode is not enabled. It can be activated via **Options-Decompile Lua**
+
 ## Build
 
 * Visual Studio 2022 or newer
@@ -78,3 +94,33 @@ First, use my another program [Il2CppDumper](https://github.com/Perfare/Il2CppDu
 * [Ishotihadus/mikunyan](https://github.com/Ishotihadus/mikunyan)
 * [BinomialLLC/crunch](https://github.com/BinomialLLC/crunch)
 * [Unity-Technologies/crunch](https://github.com/Unity-Technologies/crunch/tree/unity)
+
+### Lua Bytecode Decompiler
+* LuaJIT: [zhangjiequan/ljd: LuaJIT raw-bytecode decompiler](https://github.com/zhangjiequan/ljd)
+* Lua 5.1, 5.2, and 5.3: [zhangjiequan/luadec: Lua Decompiler for lua 5.1 , 5.2 and 5.3](https://github.com/zhangjiequan/luadec)
+
+## Roadmap
+
+### Support for new Unity versions
+Unity 2023.1, Unity 2023.2, Unity 6 (Unity 2023 LTS, Unity 2023.3), etc.
+
+## License
+
+AssetStudio is licensed under the [MIT](./LICENSE) license.
+
+## Credits
+If you find this tool useful, please mention my name in your credits screen. Something like "AssetStudio by Perfare & zhangjiequan" or "Thanks to Perfare & zhangjiequan" would be very much appreciated.
+
+## Collaborate
+Feel free to fork the project and make modifications for yourself or to share by creating pull requests. Also, create issues for feature requests or bug reports if you want to help improving this tool, thanks!
+
+## Contact
+Contact me at zhangjiequan@qq.com
+
+## Donate
+AssetStudio is a free and open-source software. If you like it and find it helpful, you can buy me a coffee!
+
+![image.png](https://s2.loli.net/2023/11/22/ChyaeWrgXYS9NEJ.png)
+
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=zhangjiequan/AssetStudio&type=Date)](https://star-history.com/#zhangjiequan/AssetStudio&Date)

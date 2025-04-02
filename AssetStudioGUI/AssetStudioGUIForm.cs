@@ -89,20 +89,27 @@ namespace AssetStudioGUI
         private string saveDirectoryBackup = string.Empty;
 
         private GUILogger logger;
+        private string maintainerTag = "(maintained by zhangjiequan)";
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [In] ref uint pcFonts);
 
-        public AssetStudioGUIForm()
+        public AssetStudioGUIForm(string[] args)
         {
+            Console.WriteLine("AssetStudioGUIForm args.Length" + args.Length);
+            foreach (var arg in args)
+            {
+                Console.WriteLine("arg:" + arg);
+            }
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             InitializeComponent();
-            Text = $"AssetStudioGUI v{Application.ProductVersion}";
+            Text = $"AssetStudioGUI v{Application.ProductVersion} - {maintainerTag}";
             delayTimer = new System.Timers.Timer(800);
             delayTimer.Elapsed += new ElapsedEventHandler(delayTimer_Elapsed);
             displayAll.Checked = Properties.Settings.Default.displayAll;
             displayInfo.Checked = Properties.Settings.Default.displayInfo;
             enablePreview.Checked = Properties.Settings.Default.enablePreview;
+            decompileLua.Checked = Properties.Settings.Default.decompileLua;
             FMODinit();
 
             logger = new GUILogger(StatusStripUpdate);
@@ -110,6 +117,27 @@ namespace AssetStudioGUI
             Logger.Default = logger;
             Progress.Default = new Progress<int>(SetProgressBarValue);
             Studio.StatusStripUpdate = StatusStripUpdate;
+            HandleMainArgs(args);
+        }
+
+        private async void HandleMainArgs(string[] args)
+        {
+            //AssetStudioGUIForm_DragDrop
+            var paths = args;
+            if (paths.Length > 0)
+            {
+                ResetForm();
+                assetsManager.SpecifyUnityVersion = specifyUnityVersion.Text;
+                if (paths.Length == 1 && Directory.Exists(paths[0]))
+                {
+                    await Task.Run(() => assetsManager.LoadFolder(paths[0]));
+                }
+                else
+                {
+                    await Task.Run(() => assetsManager.LoadFiles(paths));
+                }
+                BuildAssetStructures();
+            }
         }
 
         private void AssetStudioGUIForm_DragEnter(object sender, DragEventArgs e)
@@ -212,11 +240,11 @@ namespace AssetStudioGUI
 
             if (!string.IsNullOrEmpty(productName))
             {
-                Text = $"AssetStudioGUI v{Application.ProductVersion} - {productName} - {assetsManager.assetsFileList[0].unityVersion} - {assetsManager.assetsFileList[0].m_TargetPlatform}";
+                Text = $"AssetStudioGUI v{Application.ProductVersion} - {productName} - {assetsManager.assetsFileList[0].unityVersion} - {assetsManager.assetsFileList[0].m_TargetPlatform} - {maintainerTag}";
             }
             else
             {
-                Text = $"AssetStudioGUI v{Application.ProductVersion} - no productName - {assetsManager.assetsFileList[0].unityVersion} - {assetsManager.assetsFileList[0].m_TargetPlatform}";
+                Text = $"AssetStudioGUI v{Application.ProductVersion} - no productName - {assetsManager.assetsFileList[0].unityVersion} - {assetsManager.assetsFileList[0].m_TargetPlatform} - {maintainerTag}";
             }
 
             assetListView.VirtualListSize = visibleAssets.Count;
@@ -376,6 +404,12 @@ namespace AssetStudioGUI
         private void displayAll_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.displayAll = displayAll.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void decompileLua_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.decompileLua = decompileLua.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -943,7 +977,8 @@ namespace AssetStudioGUI
 
         private void PreviewTextAsset(TextAsset m_TextAsset)
         {
-            var text = Encoding.UTF8.GetString(m_TextAsset.m_Script);
+            byte[] textBytes = Properties.Settings.Default.decompileLua ? m_TextAsset.GetProcessedScript() : m_TextAsset.GetRawScript();
+            var text = Encoding.UTF8.GetString(textBytes);
             text = text.Replace("\n", "\r\n").Replace("\0", "");
             PreviewText(text);
         }
@@ -2048,6 +2083,28 @@ namespace AssetStudioGUI
         private void toolStripMenuItem15_Click(object sender, EventArgs e)
         {
             logger.ShowErrorMessage = toolStripMenuItem15.Checked;
+        }
+
+        private void aboutAssetStudioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("AssetStudio is a tool for exploring, extracting and exporting assets and assetbundles.\n" +
+                "For more information, visit https://github.com/zhangjiequan/AssetStudio.",
+                "About AssetStudio",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void donateAssetStudioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DonateForm donateForm = new DonateForm();
+
+            donateForm.StartPosition = FormStartPosition.Manual;
+            Point center = this.Location;
+            center.X += (this.Width - donateForm.Width) / 2;
+            center.Y += (this.Height - donateForm.Height) / 2;
+            donateForm.Location = center;
+
+            donateForm.ShowDialog();
         }
 
         private void glControl1_MouseWheel(object sender, MouseEventArgs e)

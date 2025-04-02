@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0;net6.0;net8.0</TargetFrameworks>
-    <Version>0.16.0.0</Version>
-    <AssemblyVersion>0.16.0.0</AssemblyVersion>
-    <FileVersion>0.16.0.0</FileVersion>
-    <Copyright>Copyright © Perfare 2018-2022</Copyright>
+    <Version>0.16.53.0</Version>
+    <AssemblyVersion>0.16.53.0</AssemblyVersion>
+    <FileVersion>0.16.53.0</FileVersion>
+    <Copyright>Copyright © zhangjiequan 2018-2023</Copyright>
     <DebugType>embedded</DebugType>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -22,6 +22,13 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LuaDecompile\" />
+    <Content Include="Dependencies\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
