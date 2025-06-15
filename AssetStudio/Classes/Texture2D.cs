@@ -104,6 +104,7 @@ namespace AssetStudio
                 (version[0] >= 2023) //2023 and up
             )
             {
+                reader.AlignStream();
                 var m_MipmapLimitGroupName = reader.ReadAlignedString();
             }
             if (version[0] >= 3) //3.0.0 - 5.4
